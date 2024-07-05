@@ -58,14 +58,14 @@ export function usePageContext(requireSubscription: boolean = true) {
     };
   }
 
-  if (
-    requireSubscription &&
-    (!fetch.result || !fetch.result.data || !fetch.result.data.subscription)
-  ) {
-    return {
-      user: null,
-    };
-  }
+  // if (
+  //   requireSubscription &&
+  //   (!fetch.result || !fetch.result.data || !fetch.result.data.subscription)
+  // ) {
+  //   return {
+  //     user: null,
+  //   };
+  // }
 
   return {
     user,
