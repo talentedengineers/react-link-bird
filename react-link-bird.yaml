@@ -49,7 +49,7 @@ spec:
     spec:
       containers:
       - name: react-link-bird
-        image: hirebarend/react-link-bird:b66dc62eb99c8d29676ff8b8dbaf27471b85e818
+        image: hirebarend/react-link-bird:24eab5550f2a58024ef83e167683865adf708137
         ports:
         - containerPort: 80
 ---
