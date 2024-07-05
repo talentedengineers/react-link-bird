@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -10,6 +9,8 @@ export function AppApiKeys() {
   const pageContext = usePageContext();
 
   const tokens = useFetch({
+    auto: true,
+    dependencies: [pageContext.user],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -54,6 +55,8 @@ export function AppApiKeys() {
   });
 
   const createToken = useFetch({
+    auto: false,
+    dependencies: [],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -76,15 +79,7 @@ export function AppApiKeys() {
     },
   });
 
-  useEffect(() => {
-    if (!pageContext.user) {
-      return;
-    }
-
-    tokens.execute();
-  }, [pageContext.user]);
-
-  if (tokens.isLoading || !tokens.result || !tokens.result.data) {
+  if (tokens.isLoading || !tokens.result || !tokens.result) {
     return <></>;
   }
 
@@ -113,7 +108,7 @@ export function AppApiKeys() {
           </tr>
         </thead>
         <tbody>
-          {tokens.result.data.map((x) => (
+          {tokens.result.map((x) => (
             <tr key={x}>
               <td className="align-items-center d-flex gap-4">
                 <span>{x}</span>

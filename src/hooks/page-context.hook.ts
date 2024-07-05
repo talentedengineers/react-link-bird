@@ -2,43 +2,31 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./use-auth";
-import { useFetch } from "./use-query";
+import { useFetch } from "./use-fetch";
 import { API_FQDN } from "../constants";
 
-export function usePageContext(requireSubscription: boolean = true) {
+export function usePageContext() {
   const navigate = useNavigate();
 
   const { isLoading, user } = useAuth();
 
   const fetch = useFetch({
+    auto: true,
+    dependencies: [user],
     fn: async () => {
       if (!user) {
         return null;
       }
 
-      const response = await axios.get<{ subscription: string | null }>(
-        `https://${API_FQDN}/api/v1/beetle/consumers`,
-        {
-          headers: {
-            Authorization: `Bearer ${await user.getIdToken()}`,
-          },
-        }
-      );
+      const response = await axios.get<{
+        metadata: { [key: string]: string | undefined } | undefined;
+      }>(`https://${API_FQDN}/api/v1/beetle/consumers`, {
+        headers: {
+          Authorization: `Bearer ${await user.getIdToken()}`,
+        },
+      });
 
       return response.data;
-    },
-    onComplete: async (consumer) => {
-      if (!requireSubscription) {
-        return;
-      }
-
-      console.log(consumer);
-
-      // if (consumer && consumer.subscription) {
-      //   return;
-      // }
-
-      // window.location.href = "https://buy.stripe.com/4gw8xc03R8tO0wg8ww";
     },
   });
 
@@ -48,8 +36,6 @@ export function usePageContext(requireSubscription: boolean = true) {
 
       return;
     }
-
-    fetch.execute();
   }, [isLoading, user]);
 
   if (isLoading || !user) {
@@ -58,16 +44,8 @@ export function usePageContext(requireSubscription: boolean = true) {
     };
   }
 
-  // if (
-  //   requireSubscription &&
-  //   (!fetch.result || !fetch.result.data || !fetch.result.data.subscription)
-  // ) {
-  //   return {
-  //     user: null,
-  //   };
-  // }
-
   return {
+    consumer: fetch.result,
     user,
   };
 }

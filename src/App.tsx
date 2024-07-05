@@ -6,7 +6,6 @@ import {
   AppDashboard,
   AppLinks,
   AppLinksCode,
-  AppPayment,
   AppRoute,
   SignInRoute,
   SignUpRoute,
@@ -40,10 +39,6 @@ const router = createBrowserRouter([
       {
         path: "links/:code",
         element: <AppLinksCode />,
-      },
-      {
-        path: "payment",
-        element: <AppPayment />,
       },
     ],
   },

@@ -1,36 +1,5 @@
 import { useEffect, useState } from "react";
 
-export function useFetch<T>(params: {
-  fn: () => Promise<T | null>;
-  onComplete?: (result: T | null) => Promise<void>;
-}) {
-  const [result, setResult] = useState(null as { data: T | null } | null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  return {
-    execute: () => {
-      setIsLoading(true);
-
-      params
-        .fn()
-        .then((obj: T | null) => {
-          setResult({
-            data: obj,
-          });
-
-          setIsLoading(false);
-
-          if (params.onComplete) {
-            params.onComplete(obj);
-          }
-        })
-        .catch((error) => alert(error.message));
-    },
-    isLoading,
-    result,
-  };
-}
-
 export function useQuery<T>(params: {
   actionFn?: ((action: string, obj: any) => Promise<T>) | undefined;
   enabled: boolean;

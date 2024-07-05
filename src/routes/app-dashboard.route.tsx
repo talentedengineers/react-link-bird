@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from "axios";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -10,28 +9,6 @@ import { useFetch, usePageContext } from "../hooks";
 import { PixelEvent } from "../models";
 import { StatsCard } from "../components";
 import { useSearchParams } from "react-router-dom";
-
-// function formatReferrer(referrer: string | null): string | null {
-//   if (!referrer) {
-//     return null;
-//   }
-
-//   if (referrer === "android-app://com.linkedin.android/") {
-//     return "linkedin.com";
-//   }
-
-//   if (!referrer.startsWith("http://") && !referrer.startsWith("https://")) {
-//     return referrer;
-//   }
-
-//   const hostname: string = new URL(referrer).hostname;
-
-//   const hostnameSplitted: Array<string> = hostname.split(".");
-
-//   return `${hostnameSplitted[hostnameSplitted.length - 2]}.${
-//     hostnameSplitted[hostnameSplitted.length - 1]
-//   }`;
-// }
 
 function getSeriesData(period: string, data: Array<PixelEvent>) {
   if (period === "P7D") {
@@ -140,6 +117,8 @@ export function AppDashboard() {
   const pageContext = usePageContext();
 
   const pixelEvents = useFetch({
+    auto: true,
+    dependencies: [pageContext.user, period],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -161,19 +140,7 @@ export function AppDashboard() {
     },
   });
 
-  useEffect(() => {
-    if (!pageContext.user) {
-      return;
-    }
-
-    pixelEvents.execute();
-  }, [pageContext.user]);
-
-  if (
-    pixelEvents.isLoading ||
-    !pixelEvents.result ||
-    !pixelEvents.result.data
-  ) {
+  if (pixelEvents.isLoading || !pixelEvents.result || !pixelEvents.result) {
     return <></>;
   }
 
@@ -212,16 +179,16 @@ export function AppDashboard() {
       </div>
 
       <div className="d-flex flex-column flex-md-row gap-4 mb-4">
-        <StatsCard label="Clicks" value={pixelEvents.result.data.length} />
+        <StatsCard label="Clicks" value={pixelEvents.result.length} />
         <StatsCard
           label="Last Click"
           value={
-            pixelEvents.result.data.length
+            pixelEvents.result.length
               ? `${moment
                   .duration(
                     moment(
                       Math.max(
-                        ...pixelEvents.result.data.map((x) => x.timestamp)
+                        ...pixelEvents.result.map((x) => x.timestamp)
                       )
                     ).diff(moment())
                   )
@@ -248,7 +215,7 @@ export function AppDashboard() {
             series: [
               {
                 color: "#ffbe1a",
-                data: getSeriesData(period, pixelEvents.result.data),
+                data: getSeriesData(period, pixelEvents.result),
               },
             ],
             tooltip: {
@@ -268,51 +235,6 @@ export function AppDashboard() {
           }}
         />
       </div>
-
-      {/* <Row className="gy-4">
-        <Col xs={12} md={6} lg={6}>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={{
-              chart: {
-                backgroundColor: "#fafcfe",
-                type: "pie",
-              },
-              legend: {
-                enabled: false,
-              },
-              title: {
-                text: null,
-              },
-              series: [
-                {
-                  data: logs.result.data.reduce(
-                    (arr: Array<{ name: string; y: number }>, x) => {
-                      let y = arr.find((z) => z.name === x.country);
-
-                      if (!y) {
-                        arr.push({ name: x.country || "Unknown", y: 0 });
-                      }
-
-                      y = arr.find((z) => z.name === x.country);
-
-                      if (y) {
-                        y.y += 1;
-                      }
-
-                      return arr;
-                    },
-                    [] as Array<{ name: string; y: number }>
-                  ),
-                },
-              ],
-              tooltip: {
-                pointFormat: "{point.y}",
-              },
-            }}
-          />
-        </Col>
-      </Row> */}
     </>
   );
 }

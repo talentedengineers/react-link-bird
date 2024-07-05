@@ -15,7 +15,7 @@ export function AppRoute() {
 
   const navigate = useNavigate();
 
-  const pageContext = usePageContext(false);
+  const pageContext = usePageContext();
 
   const [navBarExpanded, setNavBarExpanded] = useState(false);
 

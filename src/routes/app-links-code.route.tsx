@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import moment from "moment";
@@ -32,14 +31,14 @@ export function AppLinksCode() {
       webhook: "",
     },
     onSubmit: async (values) => {
-      if (!pageContext.user || !link.result || !link.result.data) {
+      if (!pageContext.user || !link.result || !link.result) {
         return;
       }
 
       await axios.put<Link>(
         `https://${API_FQDN}/api/v1/links/${params.code}`,
         {
-          ...link.result.data,
+          ...link.result,
           expires: values.expires ? new Date(values.expires).getTime() : null,
           geoTargeting: values.geoTargeting,
           longUrl: values.longUrl,
@@ -86,6 +85,8 @@ export function AppLinksCode() {
   });
 
   const link = useFetch({
+    auto: true,
+    dependencies: [pageContext.user, params],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -121,6 +122,8 @@ export function AppLinksCode() {
   });
 
   const linkDelete = useFetch({
+    auto: false,
+    dependencies: [],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -142,15 +145,7 @@ export function AppLinksCode() {
     },
   });
 
-  useEffect(() => {
-    if (!pageContext.user) {
-      return;
-    }
-
-    link.execute();
-  }, [pageContext.user]);
-
-  if (link.isLoading || !link.result || !link.result.data) {
+  if (link.isLoading || !link.result || !link.result) {
     return <></>;
   }
 
@@ -158,7 +153,7 @@ export function AppLinksCode() {
     <>
       <div className="align-items-center d-flex fs-4 fw-bold gap-2 mb-4">
         <BsLink strokeWidth={0.375} />
-        <span>Links - {link.result.data.code}</span>
+        <span>Links - {link.result.code}</span>
       </div>
 
       <Row className="gy-4">
@@ -169,14 +164,14 @@ export function AppLinksCode() {
           lg={{ order: 1, span: 7 }}
         >
           <div className="d-flex flex-column flex-md-row gap-4 mb-4">
-            <StatsCard label="Clicks" value={link.result.data.clicks.count} />
+            <StatsCard label="Clicks" value={link.result.clicks.count} />
             <StatsCard
               label="Last Click"
               value={
-                link.result.data.clicks.timestamp
+                link.result.clicks.timestamp
                   ? `${moment
                       .duration(
-                        moment(link.result.data.clicks.timestamp).diff(moment())
+                        moment(link.result.clicks.timestamp).diff(moment())
                       )
                       .humanize()} ago`
                   : "N/A"
@@ -190,14 +185,14 @@ export function AppLinksCode() {
           lg={{ order: 2, span: 7 }}
         >
           <div className="d-none d-md-flex flex-column flex-md-row gap-4 mb-4">
-            <StatsCard label="Clicks" value={link.result.data.clicks.count} />
+            <StatsCard label="Clicks" value={link.result.clicks.count} />
             <StatsCard
               label="Last Click"
               value={
-                link.result.data.clicks.timestamp
+                link.result.clicks.timestamp
                   ? `${moment
                       .duration(
-                        moment(link.result.data.clicks.timestamp).diff(moment())
+                        moment(link.result.clicks.timestamp).diff(moment())
                       )
                       .humanize()} ago`
                   : "N/A"
@@ -230,14 +225,12 @@ export function AppLinksCode() {
                 disabled={true}
                 name="longUrl"
                 type="text"
-                value={link.result.data.shortUrl}
+                value={link.result.shortUrl}
               />
               <InputGroup.Text
                 style={{ cursor: "pointer", userSelect: "none" }}
                 onClick={() =>
-                  navigator.clipboard.writeText(
-                    link.result?.data?.shortUrl || ""
-                  )
+                  navigator.clipboard.writeText(link.result?.shortUrl || "")
                 }
               >
                 <BsFiles />
@@ -429,17 +422,15 @@ export function AppLinksCode() {
           >
             <img
               className="mb-4 w-100"
-              src={link.result.data.openGraph?.image || ""}
+              src={link.result.openGraph?.image || ""}
             />
             <div className="pb-2 px-2">
               <div className="mb-1 text-muted text-uppercase">
-                <small>{new URL(link.result.data.longUrl).hostname}</small>
+                <small>{new URL(link.result.longUrl).hostname}</small>
               </div>
-              <div className="fw-bold mb-1">
-                {link.result.data.openGraph?.title}
-              </div>
+              <div className="fw-bold mb-1">{link.result.openGraph?.title}</div>
               <div className="mb-1">
-                <small>{link.result.data.openGraph?.description}</small>
+                <small>{link.result.openGraph?.description}</small>
               </div>
             </div>
           </div>

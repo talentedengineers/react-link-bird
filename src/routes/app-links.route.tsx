@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import Button from "react-bootstrap/Button";
@@ -23,6 +22,7 @@ export function AppLinks() {
 
   const formik = useFormik({
     initialValues: {
+      fqdn: "lnkbrd.com",
       longUrl: "",
     },
     onSubmit: async (values) => {
@@ -34,6 +34,7 @@ export function AppLinks() {
         `https://${API_FQDN}/api/v1/links`,
         {
           longUrl: values.longUrl,
+          shortUrlFqdn: values.fqdn,
         },
         {
           headers: {
@@ -45,6 +46,7 @@ export function AppLinks() {
       navigate(`/app/links/${response.data.code}`);
     },
     validationSchema: Yup.object().shape({
+      fqdn: Yup.string().required(),
       longUrl: Yup.string()
         .matches(
           /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
@@ -54,6 +56,8 @@ export function AppLinks() {
   });
 
   const links = useFetch({
+    auto: true,
+    dependencies: [pageContext.user, urlSearchParams],
     fn: async () => {
       if (!pageContext.user) {
         return null;
@@ -80,14 +84,6 @@ export function AppLinks() {
     },
   });
 
-  useEffect(() => {
-    if (!pageContext.user) {
-      return;
-    }
-
-    links.execute();
-  }, [pageContext.user, urlSearchParams]);
-
   if (links.isLoading || !links.result || !links.result.data) {
     return <></>;
   }
@@ -101,7 +97,38 @@ export function AppLinks() {
 
       <div className="mb-4">
         <Row className="gy-4">
-          <Col xs={12} md={8} lg={8}>
+          <Col xs={12} md={3} lg={3}>
+            <Form.Group>
+              <Form.Select
+                className="w-100"
+                id="fqdn"
+                isInvalid={
+                  formik.touched.fqdn && formik.errors.fqdn ? true : false
+                }
+                name="fqdn"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                onKeyUp={(e) => {
+                  if (e.key === "Enter") {
+                    formik.submitForm();
+                  }
+                }}
+                value={formik.values.fqdn}
+              >
+                <option value="lnkbrd.com">lnkbrd.com</option>
+                {pageContext.consumer?.metadata
+                  ? pageContext.consumer.metadata["fqdns"]
+                      ?.split(",")
+                      .map((x) => (
+                        <option key={x} value={x}>
+                          {x}
+                        </option>
+                      ))
+                  : null}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
             <Form.Group>
               <Form.Control
                 className="w-100"
@@ -123,7 +150,7 @@ export function AppLinks() {
               />
             </Form.Group>
           </Col>
-          <Col xs={12} md={4} lg={4}>
+          <Col xs={12} md={3} lg={3}>
             <Button
               className="fw-medium w-100"
               disabled={formik.isSubmitting}
@@ -136,7 +163,7 @@ export function AppLinks() {
         </Row>
       </div>
 
-      {links.result.data.data.length ? (
+      {links.result.data.length ? (
         <>
           <Table striped bordered hover>
             <thead>
@@ -145,7 +172,7 @@ export function AppLinks() {
               </tr>
             </thead>
             <tbody>
-              {links.result.data.data.map((x, index) => (
+              {links.result.data.map((x, index) => (
                 <tr key={index}>
                   <td>
                     <Link to={`/app/links/${x.code}`}>
@@ -159,9 +186,7 @@ export function AppLinks() {
 
           <Pagination>
             {new Array(
-              Math.ceil(
-                links.result.data.meta.total / links.result.data.meta.pageSize
-              )
+              Math.ceil(links.result.meta.total / links.result.meta.pageSize)
             )
               .fill(0)
               .map((_, index) => (
