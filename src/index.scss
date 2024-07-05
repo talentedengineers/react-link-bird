@@ -1,0 +1,33 @@
+$font-family-base: "DM Sans", sans-serif;
+
+$body-bg: #fafcfe;
+
+$dark: #212121;
+$primary: #ffbe1a;
+$secondary: #212121;
+$danger: #f87171;
+$success: #51a800;
+$warning: #ffbe1a;
+
+$container-padding-x: 3rem;
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+html,
+body {
+  height: 100dvh;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100dvh;
+}
+
+.navbar-toggler {
+  border-width: 0;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
