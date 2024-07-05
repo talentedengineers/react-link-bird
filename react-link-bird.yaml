@@ -5,13 +5,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - linkbird.io
+    - linkbird.io # [Self-Hosted]
     secretName: linkbird-io-secret
   - hosts:
-    - app.linkbird.io
+    - app.linkbird.io # [Self-Hosted]
     secretName: app-linkbird-io-secret
   rules:
-    - host: "linkbird.io"
+    - host: "linkbird.io" # [Self-Hosted]
       http:
         paths:
           - path: /
@@ -21,7 +21,7 @@ spec:
                 name: react-link-bird-service
                 port:
                   number: 80
-    - host: "app.linkbird.io"
+    - host: "app.linkbird.io" # [Self-Hosted]
       http:
         paths:
           - path: /
@@ -49,7 +49,7 @@ spec:
     spec:
       containers:
       - name: react-link-bird
-        image: hirebarend/react-link-bird:24eab5550f2a58024ef83e167683865adf708137
+        image: hirebarend/react-link-bird:latest
         ports:
         - containerPort: 80
 ---
