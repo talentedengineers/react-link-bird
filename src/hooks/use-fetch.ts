@@ -16,6 +16,10 @@ export function useFetch<T>(params: {
       params.fn().then((obj: T | null) => {
         setResult(obj);
         setIsLoading(false);
+
+        if (params.onComplete) {
+          params.onComplete(obj);
+        }
       });
     }
   }, params.dependencies);
