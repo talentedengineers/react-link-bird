@@ -1,38 +1,3 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: react-link-bird-ingress
-spec:
-  tls:
-  - hosts:
-    - linkbird.io # [Self-Hosted]
-    secretName: linkbird-io-secret
-  - hosts:
-    - app.linkbird.io # [Self-Hosted]
-    secretName: app-linkbird-io-secret
-  rules:
-    - host: "linkbird.io" # [Self-Hosted]
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: react-link-bird-service
-                port:
-                  number: 80
-    - host: "app.linkbird.io" # [Self-Hosted]
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: react-link-bird-service
-                port:
-                  number: 80
-  ingressClassName: nginx
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,7 +14,8 @@ spec:
     spec:
       containers:
       - name: react-link-bird
-        image: hirebarend/react-link-bird:c2e5d180e1b71a0478fae11d7ac6aa4bfa50455f
+        image: hirebarend/react-link-bird:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 ---

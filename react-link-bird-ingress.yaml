@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: react-link-bird-ingress
+spec:
+  tls:
+  - hosts:
+    - linkbird.io # [Self-Hosted]
+    secretName: linkbird-io-secret
+  - hosts:
+    - app.linkbird.io # [Self-Hosted]
+    secretName: app-linkbird-io-secret
+  rules:
+    - host: "linkbird.io" # [Self-Hosted]
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: react-link-bird-service
+                port:
+                  number: 80
+    - host: "app.linkbird.io" # [Self-Hosted]
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: react-link-bird-service
+                port:
+                  number: 80
+  ingressClassName: nginx
