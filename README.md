@@ -19,7 +19,7 @@ Link Bird is an open-source API-first URL shortener
 ## Deployment
 
 ```bash
-kubectl apply -f react-link-bird.yaml
+kubectl apply -f https://raw.githubusercontent.com/talentedengineers/react-link-bird/main/react-link-bird.yaml
 ```
 
 ## Contributing
