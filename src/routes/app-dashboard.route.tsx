@@ -187,9 +187,7 @@ export function AppDashboard() {
               ? `${moment
                   .duration(
                     moment(
-                      Math.max(
-                        ...pixelEvents.result.map((x) => x.timestamp)
-                      )
+                      Math.max(...pixelEvents.result.map((x) => x.timestamp))
                     ).diff(moment())
                   )
                   .humanize()} ago`

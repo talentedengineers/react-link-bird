@@ -59,7 +59,7 @@ export function SignInRoute() {
           paddingTop: "3rem",
         }}
       >
-        <h1 className="mb-4 text-center">Sign In</h1>
+        <h1 className="mb-4 text-center">Welcome to Link Bird</h1>
 
         <Form.Group className="mb-4">
           <Form.Control
@@ -113,7 +113,7 @@ export function SignInRoute() {
         </div>
 
         <Button
-          className="fw-medium mb-4 w-100"
+          className="fw-semibold mb-4 w-100"
           disabled={formik.isSubmitting}
           onClick={() => {
             formik.submitForm();
@@ -121,7 +121,7 @@ export function SignInRoute() {
           size="lg"
           variant="primary"
         >
-          Continue
+          Sign In
         </Button>
 
         <div>

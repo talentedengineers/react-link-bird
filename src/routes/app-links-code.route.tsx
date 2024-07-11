@@ -23,12 +23,9 @@ export function AppLinksCode() {
 
   const formik = useFormik({
     initialValues: {
-      expires: "",
       longUrl: "",
       geoTargeting: [] as Array<{ country: string; longUrl: string }>,
       name: "",
-      script: "",
-      webhook: "",
     },
     onSubmit: async (values) => {
       if (!pageContext.user || !link.result || !link.result) {
@@ -39,12 +36,9 @@ export function AppLinksCode() {
         `https://${API_FQDN}/api/v1/links/${params.code}`,
         {
           ...link.result,
-          expires: values.expires ? new Date(values.expires).getTime() : null,
           geoTargeting: values.geoTargeting,
           longUrl: values.longUrl,
           name: values.name || null,
-          script: values.script || null,
-          webhook: values.webhook || null,
         },
         {
           headers: {
@@ -56,7 +50,6 @@ export function AppLinksCode() {
       link.execute();
     },
     validationSchema: Yup.object().shape({
-      expires: Yup.string().optional(),
       longUrl: Yup.string()
         .matches(
           /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
@@ -75,12 +68,6 @@ export function AppLinksCode() {
         )
         .required(),
       name: Yup.string().optional(),
-      script: Yup.string().optional(),
-      webhook: Yup.string()
-        .matches(
-          /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-        )
-        .optional(),
     }),
   });
 
@@ -108,16 +95,9 @@ export function AppLinksCode() {
         return;
       }
 
-      formik.setFieldValue("cloak", link.cloak || false);
-      formik.setFieldValue(
-        "expires",
-        link.expires ? moment(link.expires).format("YYYY-MM-DDTHH:mm") : ""
-      );
       formik.setFieldValue("geoTargeting", link.geoTargeting || []);
       formik.setFieldValue("longUrl", link.longUrl || "");
       formik.setFieldValue("name", link.name || "");
-      formik.setFieldValue("script", link.script || "");
-      formik.setFieldValue("webhook", link.webhook || "");
     },
   });
 
@@ -254,56 +234,6 @@ export function AppLinksCode() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-4">
-            <Form.Label className="mb-1 text-muted">
-              <small>Expires</small>
-            </Form.Label>
-            <Form.Control
-              isInvalid={
-                formik.touched.expires && formik.errors.expires ? true : false
-              }
-              name="expires"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type="datetime-local"
-              value={formik.values.expires}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-4">
-            <Form.Label className="mb-1 text-muted">
-              <small>Webhook</small>
-            </Form.Label>
-            <Form.Control
-              isInvalid={
-                formik.touched.webhook && formik.errors.webhook ? true : false
-              }
-              name="webhook"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type="text"
-              value={formik.values.webhook}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-4">
-            <Form.Label className="mb-1 text-muted">
-              <small>Script</small>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              isInvalid={
-                formik.touched.script && formik.errors.script ? true : false
-              }
-              name="script"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              rows={4}
-              type="text"
-              value={formik.values.script}
-            />
-          </Form.Group>
-
           <div>
             <div className="d-flex justify-content-between">
               <div className="fw-bold mb-4">Geo Targeting</div>
@@ -417,8 +347,8 @@ export function AppLinksCode() {
           lg={{ order: 2, span: 5 }}
         >
           <div
-            className="border border-2"
-            style={{ backgroundColor: "#f2f3f5", borderColor: "#d1d5db" }}
+            className="border border-2 border-dark rounded"
+            style={{ backgroundColor: "#f2f3f5" }}
           >
             <img
               className="mb-4 w-100"

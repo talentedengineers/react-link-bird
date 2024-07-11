@@ -33,7 +33,7 @@ export function AppRoute() {
       >
         <Container>
           <Navbar.Brand
-            className="align-items-center d-flex fw-semibold gap-2"
+            className="align-items-center d-flex fw-bold gap-2"
             href="/app"
           >
             {APP_NAME}

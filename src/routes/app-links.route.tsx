@@ -168,7 +168,7 @@ export function AppLinks() {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Short URL</th>
+                <th>Name</th>
               </tr>
             </thead>
             <tbody>
