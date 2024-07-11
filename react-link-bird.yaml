@@ -4,6 +4,7 @@ metadata:
   name: react-link-bird-deployment
 spec:
   replicas: 2
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: react-link-bird
