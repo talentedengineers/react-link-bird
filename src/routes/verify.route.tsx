@@ -22,6 +22,8 @@ export function VerifyRoute() {
     auto: true,
     dependencies: [pageContext.user],
     fn: async () => {
+      console.log(pageContext.user);
+
       if (!pageContext.user) {
         return null;
       }
@@ -44,7 +46,9 @@ export function VerifyRoute() {
             destination: pageContext.user.email,
           },
         });
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
 
       return {};
     },
