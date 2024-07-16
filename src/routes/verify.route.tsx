@@ -1,5 +1,4 @@
 import axios from "axios";
-import crypto from "crypto";
 import { useState } from "react";
 import { useFormik } from "formik";
 import Button from "react-bootstrap/Button";
@@ -22,8 +21,6 @@ export function VerifyRoute() {
     auto: true,
     dependencies: [pageContext.user],
     fn: async () => {
-      console.log(pageContext.user);
-
       if (!pageContext.user) {
         return null;
       }
@@ -46,9 +43,7 @@ export function VerifyRoute() {
             destination: pageContext.user.email,
           },
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
 
       return {};
     },
