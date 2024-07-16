@@ -67,7 +67,7 @@ export function VerifyRoute() {
           }
         );
 
-        await axios.get<{
+        await axios.post<{
           emailAddress: string;
           id: string;
           metadata: { [key: string]: string | undefined };
@@ -123,6 +123,7 @@ export function VerifyRoute() {
 
         <Form.Group className="mb-4">
           <Form.Control
+            inputMode="numeric"
             isInvalid={formik.touched.code && formik.errors.code ? true : false}
             name="code"
             onBlur={formik.handleBlur}
