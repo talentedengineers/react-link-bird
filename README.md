@@ -4,6 +4,17 @@ Link Bird is an open-source API-first URL shortener
 
 ![](/public/screenshot.png)
 
+## Features
+
+- Analytics
+- Geo-Targeting
+- Open Graph
+- Custom Scripting
+- Cloaking
+- Expiration
+- Webhooks
+- Tags
+
 ## Tech Stack
 
 - [TypeScript](https://www.typescriptlang.org)

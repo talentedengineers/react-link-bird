@@ -9,6 +9,7 @@ import {
   AppRoute,
   SignInRoute,
   SignUpRoute,
+  VerifyRoute,
 } from "./routes";
 
 const router = createBrowserRouter([
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/auth/sign-up",
     element: <SignUpRoute />,
+  },
+  {
+    path: "/auth/verify",
+    element: <VerifyRoute />,
   },
 ]);
 

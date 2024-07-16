@@ -5,7 +5,7 @@ import { useAuth } from "./use-auth";
 import { useFetch } from "./use-fetch";
 import { API_FQDN } from "../constants";
 
-export function usePageContext() {
+export function usePageContext(_: boolean = true) {
   const navigate = useNavigate();
 
   const { isLoading, user } = useAuth();
@@ -19,7 +19,11 @@ export function usePageContext() {
       }
 
       const response = await axios.get<{
-        metadata: { [key: string]: string | undefined } | undefined;
+        emailAddress: string;
+        id: string;
+        metadata: { [key: string]: string | undefined };
+        subscription: string | null;
+        verified: boolean;
       }>(`https://${API_FQDN}/api/v1/beetle/consumers`, {
         headers: {
           Authorization: `Bearer ${await user.getIdToken()}`,
@@ -36,13 +40,27 @@ export function usePageContext() {
 
       return;
     }
-  }, [isLoading, user]);
+
+    // if (verified && fetch.result && !fetch.result.verified) {
+    //   navigate(`/auth/verify`);
+
+    //   return;
+    // }
+  }, [isLoading, user, fetch.result]);
 
   if (isLoading || !user) {
     return {
+      consumer: null,
       user: null,
     };
   }
+
+  // if (!fetch.result || (verified && !fetch.result.verified)) {
+  //   return {
+  //     consumer: null,
+  //     user: null,
+  //   };
+  // }
 
   return {
     consumer: fetch.result,
