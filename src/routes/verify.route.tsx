@@ -73,14 +73,17 @@ export function VerifyRoute() {
           metadata: { [key: string]: string | undefined };
           subscription: string | null;
           verified: boolean;
-        }>(`https://${API_FQDN}/api/v1/beetle/consumers/verify`, {
-          headers: {
-            Authorization: `Bearer ${await pageContext.user.getIdToken()}`,
-          },
-          params: {
+        }>(
+          `https://${API_FQDN}/api/v1/beetle/consumers/verify`,
+          {
             access_token: response.data.access_token,
           },
-        });
+          {
+            headers: {
+              Authorization: `Bearer ${await pageContext.user.getIdToken()}`,
+            },
+          }
+        );
 
         navigate("/app");
       } catch {

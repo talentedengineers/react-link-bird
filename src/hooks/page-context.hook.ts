@@ -5,7 +5,7 @@ import { useAuth } from "./use-auth";
 import { useFetch } from "./use-fetch";
 import { API_FQDN } from "../constants";
 
-export function usePageContext(_: boolean = true) {
+export function usePageContext(verified: boolean = true) {
   const navigate = useNavigate();
 
   const { isLoading, user } = useAuth();
@@ -41,11 +41,11 @@ export function usePageContext(_: boolean = true) {
       return;
     }
 
-    // if (verified && fetch.result && !fetch.result.verified) {
-    //   navigate(`/auth/verify`);
+    if (verified && fetch.result && !fetch.result.verified) {
+      navigate(`/auth/verify`);
 
-    //   return;
-    // }
+      return;
+    }
   }, [isLoading, user, fetch.result]);
 
   if (isLoading || !user) {
@@ -55,12 +55,12 @@ export function usePageContext(_: boolean = true) {
     };
   }
 
-  // if (!fetch.result || (verified && !fetch.result.verified)) {
-  //   return {
-  //     consumer: null,
-  //     user: null,
-  //   };
-  // }
+  if (!fetch.result || (verified && !fetch.result.verified)) {
+    return {
+      consumer: null,
+      user: null,
+    };
+  }
 
   return {
     consumer: fetch.result,
