@@ -129,7 +129,7 @@ export function SignUpRoute() {
         </Button>
 
         <div>
-          By signing in or creating an account, you agre with our{" "}
+          By signing in or creating an account, you agree with our{" "}
           <Link to="/terms-of-service">Terms of Service</Link> and{" "}
           <Link to="/privacy-policy">Privacy Policy</Link>.
         </div>
