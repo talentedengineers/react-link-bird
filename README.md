@@ -20,7 +20,6 @@ Link Bird is an open-source API-first URL shortener
 - [TypeScript](https://www.typescriptlang.org)
 - [React](https://react.dev)
 - [Vite](https://vitejs.dev)
-- [Docker](https://www.docker.com)
 - [Kubernetes](https://kubernetes.io)
 - [Digital Ocean](https://digitalocean.com)
 - [Bootstrap](https://getbootstrap.com)
