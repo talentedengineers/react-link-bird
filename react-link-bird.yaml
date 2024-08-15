@@ -18,16 +18,6 @@ spec:
       labels:
         app: react-link-bird
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - pool-nlf0c69en-bmltg
       containers:
       - name: react-link-bird
         image: hirebarend/react-link-bird:latest
