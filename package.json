@@ -21,7 +21,7 @@
     "mixpanel-browser": "^2.56.0",
     "moment": "^2.30.1",
     "react": "^19.0.0",
-    "react-bootstrap": "^2.10.6",
+    "react-bootstrap": "^2.10.7",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.2",
