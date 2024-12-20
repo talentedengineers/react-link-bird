@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/mixpanel-browser": "^2.50.2",
-    "@types/react": "^18.3.17",
+    "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-icons": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
