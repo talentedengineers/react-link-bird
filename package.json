@@ -25,7 +25,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.5",
-    "sass": "^1.84.0",
+    "sass": "^1.85.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
