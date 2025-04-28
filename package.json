@@ -16,7 +16,7 @@
     "firebase": "^11.6.1",
     "formik": "^2.4.6",
     "highcharts": "^12.2.0",
-    "highcharts-react-official": "^3.2.1",
+    "highcharts-react-official": "^3.2.2",
     "jsonwebtoken": "^9.0.2",
     "mixpanel-browser": "^2.64.0",
     "moment": "^2.30.1",
