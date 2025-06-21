@@ -15,7 +15,7 @@
     "classnames": "^2.5.1",
     "firebase": "^11.9.1",
     "formik": "^2.4.6",
-    "highcharts": "^12.2.0",
+    "highcharts": "^12.3.0",
     "highcharts-react-official": "^3.2.2",
     "jsonwebtoken": "^9.0.2",
     "mixpanel-browser": "^2.65.0",
